@@ -70,7 +70,7 @@ public class Calculate {//计算
             }
         }
         if (numberString.length() > 0) {
-            mFormulaList.add(new MathNumber(numberString.toString()));
+            mFormulaList.add(new MathNumber(numberString));
         } else {
             mOperators.push(mOperatorMap.get(operatorString.toString()));
         }
