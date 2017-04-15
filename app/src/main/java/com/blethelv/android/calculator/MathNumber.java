@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class MathNumber implements MathSymbol {
     private String mNumber;
     private BigDecimal mValue;//数值
-    private Boolean mIsOperator=false;//test
+    private Boolean mIsOperator=false;
 
     public MathNumber(BigDecimal value){
         mValue=value;
