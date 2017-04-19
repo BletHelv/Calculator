@@ -2,8 +2,6 @@ package com.blethelv.android.calculator;
 
 import com.blethelv.android.calculator.calculator.Operator;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +44,32 @@ public class Calculate {//计算
     public String getTheResult(){
         doRPN();
         mFormula=new StringBuffer(calculateRPN().getName());
+        int deleteCnt=mFormula.length();
+        boolean isDecimal=false;
+        boolean isWithout=false;//没有可以去除的零
+        for (int i=mFormula.length()-1;i>0;i--){
+            char c=mFormula.charAt(i);
+            if (c=='0'&&!isWithout){
+                deleteCnt=i;
+            }
+            else {
+                if (c == '.') {
+                    isDecimal = true;
+                    if (!isWithout) {
+                        deleteCnt=i;
+                        break;
+                    }
+                }
+                else {
+                    isWithout = true;
+                }
+            }
+        }
+        if (isDecimal) {
+            for (int i=mFormula.length()-1;i>=deleteCnt;i--) {
+                mFormula.deleteCharAt(i);
+            }
+        }
         return mFormula.toString();
     }
 
