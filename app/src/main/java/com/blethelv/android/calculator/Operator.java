@@ -1,9 +1,7 @@
-package com.blethelv.android.calculator.calculator;
-
-import com.blethelv.android.calculator.MathNumber;
-import com.blethelv.android.calculator.MathSymbol;
+package com.blethelv.android.calculator;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 
 public class Operator implements MathSymbol {
@@ -26,6 +24,13 @@ public class Operator implements MathSymbol {
         }
         if (numbers[1]!=null){
             answer=calculate(numbers[1].getValue(),numbers[0].getValue());
+        }
+        BigDecimal minApproximation = new BigDecimal(answer.toBigInteger());//最小近似值
+        BigDecimal MaxApproximation = minApproximation.add(new BigDecimal("1"));//最大近似值
+        if (MaxApproximation.subtract(answer).compareTo(minErorValue())==-1){//误差小于精确值
+            answer=MaxApproximation;
+        }else if (answer.subtract(minApproximation).compareTo(minErorValue())==-1){
+            answer=minApproximation;
         }
         return new MathNumber(answer);
     }
@@ -88,4 +93,7 @@ public class Operator implements MathSymbol {
         return mMany;
     }
 
+    private BigDecimal minErorValue(){//最小误差值
+       return new BigDecimal(1).divide(new BigDecimal(10).pow(DIGITS-1));
+    }
 }

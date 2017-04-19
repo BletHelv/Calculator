@@ -1,11 +1,17 @@
 package com.blethelv.android.calculator;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class MathNumber implements MathSymbol {
     private String mNumber;
     private BigDecimal mValue;//数值
     private Boolean mIsOperator=false;
+
+    public MathNumber(BigInteger value){
+        mValue=new BigDecimal(value);
+        mNumber=mValue.toString();
+    }
 
     public MathNumber(BigDecimal value){
         mValue=value;

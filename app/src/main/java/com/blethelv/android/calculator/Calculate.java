@@ -1,7 +1,5 @@
 package com.blethelv.android.calculator;
 
-import com.blethelv.android.calculator.calculator.Operator;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,7 +110,7 @@ public class Calculate {//计算
                 Operator operator=(Operator)symbol;
                 int place=i-1;
                 for (int j=place;j>place-2;j--){
-                    if (mFormulaList.get(j).getIsOperator() == false) {
+                    if (!mFormulaList.get(j).getIsOperator()) {
                         MathNumber number = (MathNumber) mFormulaList.get(j);
                         mFormulaList.remove(j);
                         i--;
