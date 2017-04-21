@@ -1,7 +1,6 @@
 package com.blethelv.android.calculator;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 public class Operator implements MathSymbol {
     private String mSymbol;//运算符

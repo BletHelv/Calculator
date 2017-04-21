@@ -13,6 +13,7 @@ public class CalculatorActivity extends AppCompatActivity {
             mButtonPlus,mButtonRadix_point,mButtonMinus,mButtonTimes,
             mButtonInto,mButtonPercent,mButtonBackSpace,mButtonC,mButtonEqual;
     private Calculate mCalculate=new Calculate();
+    private String mResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,7 +190,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonEqual.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mNumberTextView.setText(mCalculate.getTheResult());
+                mResult=mCalculate.getTheResult();
+                mNumberTextView.setText(mResult);
                 mNumberTextView.setSelection(mNumberTextView.getText().length());
             }
         });

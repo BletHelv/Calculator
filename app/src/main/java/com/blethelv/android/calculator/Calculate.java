@@ -9,19 +9,25 @@ public class Calculate {//计算
     private StringBuffer mFormula=new StringBuffer();
     private List<MathSymbol> mFormulaList=new LinkedList<>();
     private Stack<Operator> mOperators=new Stack<>();
-    private HashMap<String,Operator> mOperatorMap
-            = new HashMap<>();
-
+    private HashMap<String,Operator> mOperatorMap = new HashMap<>();
+    private String[] mErrors=new String[]{"不能÷0","格式错误","超过计算范围"};
+    private HashMap<String,String> mErrorsCue=new HashMap<>();
     public Calculate(){
-        OperatorData();
+        operatorData();
+        errorsData();
     }
 
     public void scanner(char c){
-            if (c>='0'&&c<='9') {
-                if (mFormula.length() == 1 && mFormula.charAt(0) == '0') {
-                    mFormula.deleteCharAt(0);
-                }
+        for (String error:mErrors) {
+            if (mFormula.toString().equals(error)){
+                clean();
             }
+        }
+        if (c>='0'&&c<='9') {
+            if (mFormula.length() == 1 && mFormula.charAt(0) == '0') {
+                mFormula.deleteCharAt(0);
+            }
+        }
         mFormula.append(c);
     }
 
@@ -40,8 +46,14 @@ public class Calculate {//计算
     }
 
     public String getTheResult(){
-        doRPN();
-        mFormula=new StringBuffer(calculateRPN().getName());
+        try {
+            doRPN();
+            mFormula = new StringBuffer(calculateRPN().getName());
+        }catch (ArithmeticException e) {
+            disposeErrors(e);
+        }catch (NumberFormatException e){
+            disposeErrors(e);
+        }
         int deleteCnt=mFormula.length();
         boolean isDecimal=false;
         boolean isWithout=false;//没有可以去除的零
@@ -144,7 +156,7 @@ public class Calculate {//计算
         mOperators.push(operator);
     }
 
-    private void OperatorData(){
+    private void operatorData(){
         mOperatorMap.put("+",new Operator("+",3,2));
         mOperatorMap.put("-",new Operator("-",3,2));
         mOperatorMap.put("×",new Operator("×",5,2));
@@ -152,5 +164,15 @@ public class Calculate {//计算
         mOperatorMap.put("%",new Operator("%",5,1));
         mOperatorMap.put("(",new Operator("(",1,0));
         mOperatorMap.put(")",new Operator(")",8,0));
+    }
+    private void errorsData(){//报错数据
+        mErrorsCue.put(new ArithmeticException().toString(),mErrors[0]);
+        mErrorsCue.put(new NumberFormatException().toString(),mErrors[1] );
+    }
+    private void disposeErrors(RuntimeException e){//错误处理
+        mFormulaList.clear();
+        mOperators.clear();
+        String exception=e.toString().replace(": "+e.getMessage(),new String());
+        mFormula=new StringBuffer(mErrorsCue.get(exception));
     }
 }
