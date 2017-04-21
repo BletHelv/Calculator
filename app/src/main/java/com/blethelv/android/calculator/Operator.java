@@ -1,11 +1,9 @@
 package com.blethelv.android.calculator;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.MathContext;
 
 public class Operator implements MathSymbol {
-    private MathContext mDigits = new MathContext(DIGITS);
     private String mSymbol;//运算符
     private int mVHL;//优先级
     private int mMany;
@@ -25,14 +23,7 @@ public class Operator implements MathSymbol {
         if (numbers[1]!=null){
             answer=calculate(numbers[1].getValue(),numbers[0].getValue());
         }
-        BigDecimal minApproximation = new BigDecimal(answer.toBigInteger());//最小近似值
-        BigDecimal MaxApproximation = minApproximation.add(new BigDecimal("1"));//最大近似值
-        if (MaxApproximation.subtract(answer).compareTo(minErorValue())==-1){//误差小于精确值
-            answer=MaxApproximation;
-        }else if (answer.subtract(minApproximation).compareTo(minErorValue())==-1){
-            answer=minApproximation;
-        }
-        return new MathNumber(answer);
+        return new MathNumber(solveErrorValue(answer));
     }
 
     private BigDecimal calculate(BigDecimal number){//单目运算
@@ -65,7 +56,7 @@ public class Operator implements MathSymbol {
                 result=number1.multiply(number2);
                 break;
             case "÷":
-                result=number1.divide(number2,mDigits);
+                result=number1.divide(number2,DIGITS ,BigDecimal.ROUND_HALF_UP);
                 break;
         }
         return result;
@@ -75,8 +66,8 @@ public class Operator implements MathSymbol {
         return mVHL;
     }
 
-    public MathContext getDigits() {
-        return mDigits;
+    public int getDigit() {
+        return DIGITS;
     }
 
     @Override
@@ -93,7 +84,21 @@ public class Operator implements MathSymbol {
         return mMany;
     }
 
-    private BigDecimal minErorValue(){//最小误差值
-       return new BigDecimal(1).divide(new BigDecimal(10).pow(DIGITS-1));
+    private BigDecimal solveErrorValue(BigDecimal value){//解决 误差值
+        String number=value.subtract(new BigDecimal(value.toBigInteger())).toPlainString();//不以指数形式输出
+        BigDecimal result=value;
+        if (number.length()==DIGITS+2){
+            String end2_3=number.substring(number.length()-3,number.length()-1);//倒数第二第三位
+            int end1=number.charAt(number.length()-1)-'0';//倒数第一位的数
+            if (end2_3.equals("99")) {
+                result=value.add(makeLeastValue(10-end1));
+            }else if (end2_3.equals("00")){
+                result=value.subtract(makeLeastValue(end1));
+            }
+        }
+        return result;
+    }
+    private BigDecimal makeLeastValue(int value){//生成最小的数 （小数点精确位）
+        return new BigDecimal(value).divide(new BigDecimal(10).pow(DIGITS));
     }
 }
