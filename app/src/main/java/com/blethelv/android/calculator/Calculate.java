@@ -41,11 +41,11 @@ public class Calculate {//计算
         mFormula.delete(0,mFormula.length());
     }
 
-    public String getFormula(){
-        return mFormula.toString();
+    public StringBuffer getFormula(){
+        return mFormula;
     }
 
-    public String getTheResult(){
+    public void getTheResult(){
         try {
             doRPN();
             mFormula = new StringBuffer(calculateRPN().getName());
@@ -80,7 +80,6 @@ public class Calculate {//计算
                 mFormula.deleteCharAt(i);
             }
         }
-        return mFormula.toString();
     }
 
 
