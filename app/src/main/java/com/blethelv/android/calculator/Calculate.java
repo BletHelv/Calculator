@@ -12,13 +12,15 @@ public class Calculate {//计算
     private HashMap<String,Operator> mOperatorMap = new HashMap<>();
     private String[] mErrors=new String[]{"不能÷0","格式错误","超过计算范围"};
     private HashMap<String,String> mErrorsCue=new HashMap<>();
-    public Calculate(){
+    private int mMaxDecimal;//保留最大小数位数
+    public Calculate(int maxDecimal){
         operatorData();
         errorsData();
+        mMaxDecimal=maxDecimal;
     }
 
     public void scanner(char c){
-        for (String error:mErrors) {
+        for (String error:mErrors) {//清除错误信息
             if (mFormula.toString().equals(error)){
                 clean();
             }
@@ -131,7 +133,7 @@ public class Calculate {//计算
                         break;
                     }
                 }
-                mFormulaList.set(i,operator.doCalculate(numbers));
+                mFormulaList.set(i,operator.doCalculate(numbers,mMaxDecimal));
             }
         }
         MathNumber result=(MathNumber)mFormulaList.get(0);
