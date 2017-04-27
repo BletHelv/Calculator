@@ -19,18 +19,26 @@ public class Calculate {//计算
         mMaxDecimal=maxDecimal;
     }
 
-    public void scanner(char c){
+    public void scanner(int i){
         for (String error:mErrors) {//清除错误信息
             if (mFormula.toString().equals(error)){
                 clean();
             }
         }
-        if (c>='0'&&c<='9') {
+        if (i>=0&&i<=9) {
             if (mFormula.length() == 1 && mFormula.charAt(0) == '0') {
                 mFormula.deleteCharAt(0);
             }
         }
-        mFormula.append(c);
+        mFormula.append(i);
+    }
+    public void scanner(String s){
+        for (String error:mErrors) {//清除错误信息
+            if (mFormula.toString().equals(error)){
+                clean();
+            }
+        }
+        mFormula.append(s);
     }
 
     public void backSpace(){
@@ -51,9 +59,7 @@ public class Calculate {//计算
         try {
             doRPN();
             mFormula = new StringBuffer(calculateRPN().getName());
-        }catch (ArithmeticException e) {
-            disposeErrors(e);
-        }catch (NumberFormatException e){
+        }catch (RuntimeException e) {
             disposeErrors(e);
         }
         int deleteCnt=mFormula.length();
@@ -165,6 +171,15 @@ public class Calculate {//计算
         mOperatorMap.put("%",new Operator("%",5,1));
         mOperatorMap.put("(",new Operator("(",1,0));
         mOperatorMap.put(")",new Operator(")",8,0));
+        mOperatorMap.put("^",new Operator("^",7,2));
+        mOperatorMap.put("√",new Operator("√",5,2));
+        mOperatorMap.put("π",new Operator("π",5,1));
+        mOperatorMap.put("e",new Operator("e",5,1));
+        mOperatorMap.put("sin",new Operator("sin",5,1));
+        mOperatorMap.put("cos",new Operator("cos",5,1));
+        mOperatorMap.put("tan",new Operator("tan",5,1));
+        mOperatorMap.put("log",new Operator("log",5,1));
+        mOperatorMap.put("ln",new Operator("ln",5,1));
     }
     private void errorsData(){//报错数据
         mErrorsCue.put(new ArithmeticException().toString(),mErrors[0]);

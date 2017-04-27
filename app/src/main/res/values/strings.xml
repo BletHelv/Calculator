@@ -21,4 +21,13 @@
     <string name="left_bracket">(</string>
     <string name="right_bracket">)</string>
     <string name="percent">%</string>
+    <string name="sin">sin</string>
+    <string name="cos">cos</string>
+    <string name="tan">tan</string>
+    <string name="log">log</string>
+    <string name="ln">ln</string>
+    <string name="radical_sign">√</string>
+    <string name="power">^</string>
+    <string name="pi">π</string>
+    <string name="natural_constant">e</string>
 </resources>

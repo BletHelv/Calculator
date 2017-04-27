@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:stretchColumns="*">
+    <!--1-->
     <TableRow android:layout_width="match_parent"
               android:layout_height="wrap_content">
         <EditText
@@ -14,33 +15,10 @@
             android:layout_height="wrap_content"
             android:layout_span="4"
             android:textSize="24sp"
-            android:singleLine="true"
+            android:maxLines="1"
             android:id="@+id/number_edit"/>
     </TableRow>
-    <TableRow android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1">
-        <Button
-            android:id="@+id/clean_up"
-            android:text="@string/clean_up"
-            android:layout_height="match_parent"
-            android:textSize="24sp"/>
-        <Button
-            android:id="@+id/into"
-            android:text="@string/into"
-            android:layout_height="match_parent"
-            android:textSize="24sp"/>
-        <Button
-            android:id="@+id/times"
-            android:text="@string/times"
-            android:layout_height="match_parent"
-            android:textSize="24sp"/>
-        <Button
-            android:id="@+id/backSpace"
-            android:text="@string/backSpace"
-            android:layout_height="match_parent"
-            android:textSize="24sp"/>
-    </TableRow>
+    <!--2-->
     <TableRow android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_weight="1">
@@ -48,23 +26,36 @@
             android:id="@+id/seven"
             android:text="@string/seven"
             android:layout_height="match_parent"
-            android:textSize="24sp"/>
+            android:layout_weight="1"
+            />
         <Button
             android:id="@+id/eight"
             android:text="@string/eight"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
             android:id="@+id/nine"
             android:text="@string/nine"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
-            android:id="@+id/minus"
-            android:text="@string/minus"
+            android:id="@+id/clean_up"
+            android:text="@string/clean_up"
             android:layout_height="match_parent"
-            android:textSize="24sp"/>
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@android:color/holo_orange_dark"/>
+        <Button
+            android:id="@+id/backSpace"
+            android:text="@string/backSpace"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@android:color/holo_orange_dark"/>
     </TableRow>
+    <!--3-->
     <TableRow android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_weight="1">
@@ -72,24 +63,37 @@
             android:id="@+id/four"
             android:text="@string/four"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
             android:id="@+id/five"
             android:text="@string/five"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
             android:id="@+id/six"
             android:text="@string/six"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
             android:id="@+id/plus"
             android:text="@string/plus"
             android:layout_height="match_parent"
-            android:textSize="24sp"/>
-    </TableRow>
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/minus"
+            android:text="@string/minus"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
 
+    </TableRow>
+    <!--4-->
     <TableRow android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_weight="1">
@@ -97,43 +101,161 @@
             android:id="@+id/one"
             android:text="@string/one"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
             android:id="@+id/two"
             android:text="@string/two"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
             android:id="@+id/three"
             android:text="@string/three"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
-            android:id="@+id/percent"
-            android:text="@string/percent"
+            android:id="@+id/times"
+            android:text="@string/times"
             android:layout_height="match_parent"
-            android:textSize="24sp"/>
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/into"
+            android:text="@string/into"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
     </TableRow>
-
+    <!--6-->
     <TableRow android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="match_parent"
               android:layout_weight="1">
         <Button
             android:id="@+id/radix_point"
             android:text="@string/radix_point"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
             android:id="@+id/zero"
             android:text="@string/zero"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textSize="24sp"/>
         <Button
             android:id="@+id/equal"
             android:text="@string/equal"
-            android:layout_span="2"
             android:layout_height="match_parent"
-            android:textSize="24sp"/>
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@android:color/holo_red_dark"/>
+        <Button
+            android:id="@+id/left_bracket"
+            android:text="@string/left_bracket"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/right_bracket"
+            android:text="@string/right_bracket"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
+    </TableRow>
+    <!--6-->
+    <TableRow android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1">
+
+        <Button
+            android:id="@+id/pi"
+            android:text="@string/pi"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/natural_constant"
+            android:text="@string/natural_constant"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/percent"
+            android:text="@string/percent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/power"
+            android:text="@string/power"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/radical_sign"
+            android:text="@string/radical_sign"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="?attr/actionModeSplitBackground"/>
+
+    </TableRow>
+    <!--7-->
+    <TableRow android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1">
+        <Button
+            android:id="@+id/sin"
+            android:text="@string/sin"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textAllCaps="false"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/cos"
+            android:text="@string/cos"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textAllCaps="false"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/tan"
+            android:text="@string/tan"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textAllCaps="false"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/log"
+            android:text="@string/log"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textAllCaps="false"
+            android:textColor="?attr/actionModeSplitBackground"/>
+        <Button
+            android:id="@+id/ln"
+            android:text="@string/ln"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:textAllCaps="false"
+            android:textColor="?attr/actionModeSplitBackground"/>
     </TableRow>
 
 </TableLayout>

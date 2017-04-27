@@ -7,16 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.text.DecimalFormat;
 
 public class CalculatorActivity extends AppCompatActivity {
     private EditText mNumberTextView;
     private Button[] mButtonNumber;
     private Button mButtonPlus,mButtonRadix_point,mButtonMinus,mButtonTimes,
-            mButtonInto,mButtonPercent,mButtonBackSpace,mButtonC,mButtonEqual;
+            mButtonInto,mButtonPercent,mButtonBackSpace,mButtonC,mButtonEqual,
+            mButtonLeft_bracket,mButtonRight_bracket,mButtonSin,mButtonCos,
+            mButtonTan,mButtonLog,mButtonLn,mButtonRadical_sign,mButtonPower,
+            mButtonPi,mButtonNatural_constant;
     private int mMaxDecimal;
     private Calculate mCalculate;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,17 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonC=(Button)findViewById(R.id.clean_up);//清除
         mButtonEqual=(Button)findViewById(R.id.equal);//等于
         mButtonBackSpace=(Button)findViewById(R.id.backSpace);//退格
+        mButtonLeft_bracket=(Button)findViewById(R.id.left_bracket);// (
+        mButtonRight_bracket=(Button)findViewById(R.id.right_bracket);// )
+        mButtonSin=(Button)findViewById(R.id.sin);//sin
+        mButtonCos=(Button)findViewById(R.id.cos);//cos
+        mButtonTan=(Button)findViewById(R.id.tan);//tan
+        mButtonLog=(Button)findViewById(R.id.log);//log
+        mButtonLn=(Button)findViewById(R.id.ln);//ln
+        mButtonRadical_sign=(Button)findViewById(R.id.radical_sign);//√
+        mButtonPower=(Button)findViewById(R.id.power);//^
+        mButtonPi=(Button)findViewById(R.id.pi);//π
+        mButtonNatural_constant=(Button)findViewById(R.id.natural_constant);//e
         //----------------------------------------------------------
         mButtonNumber[1].setOnClickListener(new View.OnClickListener(){
             @Override
@@ -121,7 +133,7 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonRadix_point.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('.');
+                mCalculate.scanner(getString(R.string.radix_point));
                 updateText();
             }
         });
@@ -129,38 +141,117 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonPlus.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('+');
+                mCalculate.scanner(getString(R.string.plus));
                 updateText();
             }
         });
         mButtonMinus.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('-');
+                mCalculate.scanner(getString(R.string.minus));
                 updateText();
             }
         });
         mButtonTimes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('×');
+                mCalculate.scanner(getString(R.string.times));
                 updateText();
             }
         });
         mButtonInto.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('÷');
+                mCalculate.scanner(getString(R.string.into));
+                updateText();
+            }
+        });
+        mButtonLeft_bracket.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.left_bracket));
+                updateText();
+            }
+        });
+        mButtonRight_bracket.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.right_bracket));
+                updateText();
+            }
+        });
+        mButtonRadical_sign.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.radical_sign));
+                updateText();
+            }
+        });
+        mButtonPi.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.pi));
+                updateText();
+            }
+        });
+        mButtonNatural_constant.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.natural_constant));
                 updateText();
             }
         });
         mButtonPercent.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('%');
+                mCalculate.scanner(getString(R.string.percent));
                 updateText();
             }
         });
+        mButtonPower.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.power));
+                updateText();
+            }
+        });
+        mButtonSin.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.sin)+"(");
+                updateText();
+            }
+        });
+        mButtonCos.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.cos)+"(");
+                updateText();
+            }
+        });
+        mButtonTan.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.tan)+"(");
+                updateText();
+            }
+        });
+        mButtonLog.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.log)+"(");
+                updateText();
+            }
+        });
+        mButtonLn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mCalculate.scanner(getString(R.string.ln)+"(");
+                updateText();
+            }
+        });
+
+
         mButtonBackSpace.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

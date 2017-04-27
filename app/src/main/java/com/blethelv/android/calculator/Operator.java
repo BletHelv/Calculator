@@ -36,8 +36,7 @@ public class Operator implements MathSymbol {
                 break;
             case "+":
                 result=new BigDecimal(0).add(number);
-            default:
-                break;
+                // TODO: 2017/4/27
         }
         return result;
     }
@@ -57,6 +56,7 @@ public class Operator implements MathSymbol {
             case "÷":
                 result=number1.divide(number2,maxDecimal ,BigDecimal.ROUND_HALF_UP);
                 break;
+            // TODO: 2017/4/27
         }
         return result;
     }
