@@ -5,13 +5,11 @@ import java.math.BigDecimal;
 public class Operator implements MathSymbol {
     private String mSymbol;//运算符
     private int mVHL;//优先级
-    private int mMany;
     private Boolean mIsOperator=true;
 
-    public Operator(String Symbol, int VHL,int many){
+    public Operator(String Symbol, int VHL){
         mSymbol=Symbol;
         mVHL=VHL;
-        mMany=many;
     }
 
     public MathNumber doCalculate(MathNumber[] numbers,int maxDecimal){
@@ -24,6 +22,7 @@ public class Operator implements MathSymbol {
         }else if (numbers[0]==null){
             answer=calculate();
         }
+        answer=answer.setScale(maxDecimal,BigDecimal.ROUND_DOWN);
         return new MathNumber(solveErrorValue(answer,maxDecimal));
     }
     private BigDecimal calculate(){//常数
@@ -38,23 +37,38 @@ public class Operator implements MathSymbol {
         return result;
     }
     private BigDecimal calculate(BigDecimal number){//单目运算
-        BigDecimal result=new BigDecimal(0);
+        BigDecimal result=V0;
         switch (mSymbol) {
             case "%":
-                result=number.divide(new BigDecimal(100));
+                result=number.divide(V100);
                 break;
             case "-":
-                result=new BigDecimal(0).subtract(number);
+                result=V0.subtract(number);
                 break;
             case "+":
-                result=new BigDecimal(0).add(number);
-                // TODO: 2017/4/27
+                result=V0.add(number);
+                break;
+            case "sin":
+                result=new BigDecimal(Math.sin(number.divide(V180).doubleValue()*Math.PI));
+                break;
+            case "cos":
+                result=new BigDecimal(Math.cos(number.divide(V180).doubleValue()*Math.PI));
+                break;
+            case "tan":
+                result=new BigDecimal(Math.tan(number.divide(V180).doubleValue()*Math.PI));
+                break;
+            case "log":
+                result=new BigDecimal(Math.log10(number.doubleValue()));
+                break;
+            case "ln":
+                result=new BigDecimal(Math.log(number.doubleValue()));
+                break;
         }
         return result;
     }
 
     private BigDecimal calculate(BigDecimal number1,BigDecimal number2){//双目运算
-        BigDecimal result=new BigDecimal(0);
+        BigDecimal result=V0;
         switch (mSymbol){
             case "+":
                 result=number1.add(number2);
@@ -68,7 +82,13 @@ public class Operator implements MathSymbol {
             case "÷":
                 result=number1.divide(number2,maxDecimal ,BigDecimal.ROUND_HALF_UP);
                 break;
-            // TODO: 2017/4/27
+            case "√":
+                result=new BigDecimal(Math.pow(number2.doubleValue(),
+                        new BigDecimal(1).divide(number1).doubleValue()));
+                break;
+            case "^":
+                result=new BigDecimal(Math.pow(number1.doubleValue(),number2.doubleValue()));
+                break;
         }
         return result;
     }
@@ -87,9 +107,6 @@ public class Operator implements MathSymbol {
         return mIsOperator;
     }
 
-    public int getMany() {
-        return mMany;
-    }
 
     private BigDecimal solveErrorValue(BigDecimal value,int maxDecimal){//解决 误差值
         String number=value.subtract(new BigDecimal(value.toBigInteger())).toPlainString();//不以指数形式输出
@@ -106,6 +123,6 @@ public class Operator implements MathSymbol {
         return result;
     }
     private BigDecimal makeLeastValue(int value,int maxDecimal){//生成最小的数 （小数点精确位）
-        return new BigDecimal(value).divide(new BigDecimal(10).pow(maxDecimal));
+        return new BigDecimal(value).divide(V10.pow(maxDecimal));
     }
 }

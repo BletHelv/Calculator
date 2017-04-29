@@ -251,7 +251,6 @@ public class CalculatorActivity extends AppCompatActivity {
             }
         });
 
-
         mButtonBackSpace.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

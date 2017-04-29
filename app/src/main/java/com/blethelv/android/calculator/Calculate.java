@@ -113,6 +113,7 @@ public class Calculate {//计算
     }
 
     private MathNumber calculateRPN(){//运算逆波兰表达式
+        // TODO: 2017/4/29 debug 
         MathNumber[] numbers=new MathNumber[2];
         MathSymbol symbol;
         for (int i=0;i<mFormulaList.size();i++){
@@ -211,22 +212,22 @@ public class Calculate {//计算
     }
 
     private void operatorData(){
-        mOperatorMap.put("+",new Operator("+",3,2));
-        mOperatorMap.put("-",new Operator("-",3,2));
-        mOperatorMap.put("×",new Operator("×",5,2));
-        mOperatorMap.put("÷",new Operator("÷",5,2));
-        mOperatorMap.put("%",new Operator("%",5,1));
-        mOperatorMap.put("(",new Operator("(",1,0));
-        mOperatorMap.put(")",new Operator(")",8,0));
-        mOperatorMap.put("^",new Operator("^",7,2));
-        mOperatorMap.put("√",new Operator("√",5,2));
-        mOperatorMap.put("π",new Operator("π",5,1));
-        mOperatorMap.put("e",new Operator("e",5,1));
-        mOperatorMap.put("sin",new Operator("sin",5,1));
-        mOperatorMap.put("cos",new Operator("cos",5,1));
-        mOperatorMap.put("tan",new Operator("tan",5,1));
-        mOperatorMap.put("log",new Operator("log",5,1));
-        mOperatorMap.put("ln",new Operator("ln",5,1));
+        mOperatorMap.put("+",new Operator("+",3));
+        mOperatorMap.put("-",new Operator("-",3));
+        mOperatorMap.put("×",new Operator("×",5));
+        mOperatorMap.put("÷",new Operator("÷",5));
+        mOperatorMap.put("%",new Operator("%",5));
+        mOperatorMap.put("(",new Operator("(",1));
+        mOperatorMap.put(")",new Operator(")",8));
+        mOperatorMap.put("^",new Operator("^",7));
+        mOperatorMap.put("√",new Operator("√",5));
+        mOperatorMap.put("π",new Operator("π",5));
+        mOperatorMap.put("e",new Operator("e",5));
+        mOperatorMap.put("sin",new Operator("sin",5));
+        mOperatorMap.put("cos",new Operator("cos",5));
+        mOperatorMap.put("tan",new Operator("tan",5));
+        mOperatorMap.put("log",new Operator("log",5));
+        mOperatorMap.put("ln",new Operator("ln",5));
     }
     private void errorsData(){//报错数据
         mErrorsCue.put(new ArithmeticException().toString(),mErrors[0]);
