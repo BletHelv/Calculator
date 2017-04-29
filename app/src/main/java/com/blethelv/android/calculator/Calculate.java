@@ -14,17 +14,13 @@ public class Calculate {//计算
     private HashMap<String,String> mErrorsCue=new HashMap<>();
     private int mMaxDecimal;//保留最大小数位数
     public Calculate(int maxDecimal){
-        operatorData();
-        errorsData();
+        operatorData();//运算符数据
+        errorsData();//错误信息数据
         mMaxDecimal=maxDecimal;
     }
 
-    public void scanner(int i){
-        for (String error:mErrors) {//清除错误信息
-            if (mFormula.toString().equals(error)){
-                clean();
-            }
-        }
+    public void scanner(int i){//输入数字
+        cleanErrorMessage();
         if (i>=0&&i<=9) {
             if (mFormula.length() == 1 && mFormula.charAt(0) == '0') {
                 mFormula.deleteCharAt(0);
@@ -32,18 +28,26 @@ public class Calculate {//计算
         }
         mFormula.append(i);
     }
-    public void scanner(String s){
-        for (String error:mErrors) {//清除错误信息
-            if (mFormula.toString().equals(error)){
-                clean();
-            }
+    public void scanner(String s){//输入运算符
+        cleanErrorMessage();
+        if (s.equals(" ")){
+            mFormula.append(" ");
+        }else {
+            mFormula.append(" ");
+            mFormula.append(s);
+            mFormula.append(" ");
         }
-        mFormula.append(s);
     }
 
     public void backSpace(){
         if (mFormula.length()>0) {
-            mFormula.deleteCharAt(mFormula.length() - 1);
+            int i = mFormula.length() - 1;
+            if (mFormula.charAt(i) == ' ') {
+                do {
+                    i--;
+                } while (mFormula.charAt(i) != ' ');
+            }
+            mFormula.delete(i,mFormula.length());
         }
     }
 
@@ -52,75 +56,63 @@ public class Calculate {//计算
     }
 
     public StringBuffer getFormula(){
-        return mFormula;
+        //处理数学表达式格式
+        String number;
+        StringBuffer text=new StringBuffer(mFormula.toString().replaceAll(" ",""));//去空格
+        int start=0;
+        int radixPoint=-1;
+        int i;
+        for (i=start;i<text.length();i++){
+            char character=text.charAt(i);
+            if (character == '.'){
+                radixPoint=i;
+            }else if (!( character>= '0' && character <= '9')){
+                number=setNumberFormat((text.substring(start,i)),radixPoint);
+                text.replace(start,i,number);
+                start=i+1;
+            }
+        }
+        number=setNumberFormat((text.substring(start,i)),radixPoint);
+        text.replace(start,i,number);
+        return text;
     }
 
     public void getTheResult(){
         try {
-            doRPN();
-            mFormula = new StringBuffer(calculateRPN().getName());
+            doRPN();//转化成逆波兰表达式
+            mFormula = new StringBuffer(calculateRPN().getName());//对逆波兰表达式进行运算
         }catch (RuntimeException e) {
-            disposeErrors(e);
+            disposeErrors(e);//报错
         }
-        int deleteCnt=mFormula.length();
-        boolean isDecimal=false;
-        boolean isWithout=false;//没有可以去除的零
-        for (int i=mFormula.length()-1;i>0;i--){
-            char c=mFormula.charAt(i);
-            if (c=='0'&&!isWithout){
-                deleteCnt=i;
-            }
-            else {
-                if (c == '.') {
-                    isDecimal = true;
-                    if (!isWithout) {
-                        deleteCnt=i;
-                        break;
-                    }
-                }
-                else {
-                    isWithout = true;
-                }
-            }
-        }
-        if (isDecimal) {
-            for (int i=mFormula.length()-1;i>=deleteCnt;i--) {
-                mFormula.deleteCharAt(i);
-            }
-        }
+        removeUselessZero();//去无用之零
     }
 
 
-    private void doRPN() {
+    private void doRPN() {//转化成逆波兰表达式
         StringBuffer numberString = new StringBuffer();
         StringBuffer operatorString = new StringBuffer();
         for (int i = 0; i < mFormula.length(); i++) {
             char formulaChar = mFormula.charAt(i);//字母和符号
             if (formulaChar >= '0' && formulaChar <= '9' || formulaChar == '.') {
                 numberString.append(formulaChar);
-                if (operatorString.length() > 0) {
-                    OperatorInto(operatorString);
-                    operatorString.setLength(0);
-                }
-            } else {
+            } else if (formulaChar!=' ') {
                 operatorString.append(formulaChar);
+            } else{
                 if (numberString.length() > 0) {
                     mFormulaList.add(new MathNumber(numberString));
                     numberString.setLength(0);
+                } else {
+                    OperatorInto(operatorString);
+                    operatorString.setLength(0);
                 }
             }
-        }
-        if (numberString.length() > 0) {
-            mFormulaList.add(new MathNumber(numberString));
-        } else {
-            mOperators.push(mOperatorMap.get(operatorString.toString()));
         }
         while (mOperators.size() != 0) {
             mFormulaList.add(mOperators.pop());
         }
     }
 
-    private MathNumber calculateRPN(){
+    private MathNumber calculateRPN(){//运算逆波兰表达式
         MathNumber[] numbers=new MathNumber[2];
         MathSymbol symbol;
         for (int i=0;i<mFormulaList.size();i++){
@@ -147,7 +139,7 @@ public class Calculate {//计算
         return result;
     }
 
-    private void OperatorInto(StringBuffer operatorString){
+    private void OperatorInto(StringBuffer operatorString){//把运算符放入式子里
         Operator operator=mOperatorMap.get(operatorString.toString());
         int lastVHL=0;
         if (mOperators.size() > 0) {
@@ -161,6 +153,58 @@ public class Calculate {//计算
             mFormulaList.add(mOperators.pop());
         }
         mOperators.push(operator);
+    }
+
+    private String setNumberFormat(String number,int radixPoint){//给数字添加千位分隔符 逗号
+        String formatNumber;
+        int cnt=0;
+        if (number.length()>3){
+            StringBuffer buffer=new StringBuffer(number);
+            if (radixPoint==-1){
+                radixPoint=buffer.length();
+            }
+            for (int i=radixPoint-1;i>0;i--){
+                cnt++;
+                if (cnt==3){
+                    buffer.insert(i,',');
+                    cnt=0;
+                }
+            }
+            formatNumber=buffer.toString();
+        }
+        else {
+            formatNumber=number;
+        }
+        return formatNumber;
+    }
+
+    private void removeUselessZero(){//去无用之零
+        int deleteCnt=mFormula.length();
+        boolean isDecimal=false;
+        boolean isWithout=false;//没有可以去除的零
+        for (int i=mFormula.length()-1;i>0;i--){
+            char c=mFormula.charAt(i);
+            if (c=='0'&&!isWithout){
+                deleteCnt=i;
+            }
+            else {
+                if (c == '.') {
+                    isDecimal = true;
+                    if (!isWithout) {
+                        deleteCnt=i;
+                        break;
+                    }
+                }
+                else {
+                    isWithout = true;
+                }
+            }
+        }
+        if (isDecimal) {
+            for (int i=mFormula.length()-1;i>=deleteCnt;i--) {
+                mFormula.deleteCharAt(i);
+            }
+        }
     }
 
     private void operatorData(){
@@ -191,4 +235,12 @@ public class Calculate {//计算
         String exception=e.toString().replace(": "+e.getMessage(),new String());
         mFormula=new StringBuffer(mErrorsCue.get(exception));
     }
+    private void cleanErrorMessage(){//清除错误信息
+        for (String error:mErrors) {
+            if (mFormula.toString().equals(error)){
+                clean();
+            }
+        }
+    }
+
 }

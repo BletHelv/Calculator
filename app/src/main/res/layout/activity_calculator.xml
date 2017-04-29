@@ -27,6 +27,7 @@
             android:text="@string/seven"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="24sp"
             />
         <Button
             android:id="@+id/eight"
@@ -179,7 +180,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="24sp"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_purple"/>
 
         <Button
             android:id="@+id/natural_constant"
@@ -187,7 +189,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="24sp"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_purple"/>
 
         <Button
             android:id="@+id/percent"
@@ -247,7 +250,7 @@
             android:layout_weight="1"
             android:textSize="24sp"
             android:textAllCaps="false"
-            android:textColor="?attr/actionModeSplitBackground"/>
+            android:textColor="@color/colorPrimaryDark"/>
         <Button
             android:id="@+id/ln"
             android:text="@string/ln"

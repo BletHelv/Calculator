@@ -21,10 +21,22 @@ public class Operator implements MathSymbol {
         }
         if (numbers[1]!=null){
             answer=calculate(numbers[1].getValue(),numbers[0].getValue());
+        }else if (numbers[0]==null){
+            answer=calculate();
         }
         return new MathNumber(solveErrorValue(answer,maxDecimal));
     }
-
+    private BigDecimal calculate(){//常数
+        BigDecimal result=new BigDecimal(0);
+        switch (mSymbol){
+            case "π":
+                result=new BigDecimal(Math.PI);
+                break;
+            case "e":
+                result=new BigDecimal(Math.E);
+        }
+        return result;
+    }
     private BigDecimal calculate(BigDecimal number){//单目运算
         BigDecimal result=new BigDecimal(0);
         switch (mSymbol) {

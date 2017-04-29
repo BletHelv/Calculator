@@ -62,70 +62,70 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonNumber[1].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('1');
+                mCalculate.scanner(1);
                 updateText();
             }
         });
         mButtonNumber[2].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('2');
+                mCalculate.scanner(2);
                 updateText();
             }
         });
         mButtonNumber[3].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('3');
+                mCalculate.scanner(3);
                 updateText();
             }
         });
         mButtonNumber[4].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('4');
+                mCalculate.scanner(4);
                 updateText();
             }
         });
         mButtonNumber[5].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('5');
+                mCalculate.scanner(5);
                 updateText();
             }
         });
         mButtonNumber[6].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('6');
+                mCalculate.scanner(6);
                 updateText();
             }
         });
         mButtonNumber[7].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('7');
+                mCalculate.scanner(7);
                 updateText();
             }
         });
         mButtonNumber[8].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('8');
+                mCalculate.scanner(8);
                 updateText();
             }
         });
         mButtonNumber[9].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('9');
+                mCalculate.scanner(9);
                 updateText();
             }
         });
         mButtonNumber[0].setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner('0');
+                mCalculate.scanner(0);
                 updateText();
             }
         });
@@ -218,35 +218,35 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonSin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner(getString(R.string.sin)+"(");
+                mCalculate.scanner(getString(R.string.sin));
                 updateText();
             }
         });
         mButtonCos.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner(getString(R.string.cos)+"(");
+                mCalculate.scanner(getString(R.string.cos));
                 updateText();
             }
         });
         mButtonTan.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner(getString(R.string.tan)+"(");
+                mCalculate.scanner(getString(R.string.tan));
                 updateText();
             }
         });
         mButtonLog.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner(getString(R.string.log)+"(");
+                mCalculate.scanner(getString(R.string.log));
                 updateText();
             }
         });
         mButtonLn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                mCalculate.scanner(getString(R.string.ln)+"(");
+                mCalculate.scanner(getString(R.string.ln));
                 updateText();
             }
         });
@@ -270,56 +270,16 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonEqual.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                mCalculate.scanner(" ");
                 mCalculate.getTheResult();
                 updateText();
             }
         });
     }
-
     private void updateText(){
-        String number;
-        StringBuffer text=new StringBuffer(mCalculate.getFormula().toString());
-        int start=0;
-        int radixPoint=-1;
-        int i;
-        for (i=start;i<text.length();i++){
-            char character=text.charAt(i);
-            if (character == '.'){
-                radixPoint=i;
-            }else if (!( character>= '0' && character <= '9')){
-                number=setNumberFormat((text.substring(start,i)),radixPoint);
-                text.replace(start,i,number);
-                start=i+1;
-            }
-        }
-        number=setNumberFormat((text.substring(start,i)),radixPoint);
-        text.replace(start,i,number);
-
-        mNumberTextView.setText(text);
+        mNumberTextView.setText(mCalculate.getFormula());
         mNumberTextView.setSelection(mNumberTextView.getText().length());
     }
 
-    private String setNumberFormat(String number,int radixPoint){
-        String formatNumber;
-        int cnt=0;
-        if (number.length()>3){
-            StringBuffer buffer=new StringBuffer(number);
-            if (radixPoint==-1){
-                radixPoint=buffer.length();
-            }
-            for (int i=radixPoint-1;i>0;i--){
-                cnt++;
-                if (cnt==3){
-                    buffer.insert(i,',');
-                    cnt=0;
-                }
-            }
-            formatNumber=buffer.toString();
-        }
-        else {
-            formatNumber=number;
-        }
-        return formatNumber;
-    }
 }
 
