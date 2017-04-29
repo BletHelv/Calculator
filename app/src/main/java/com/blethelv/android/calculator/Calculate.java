@@ -101,7 +101,7 @@ public class Calculate {//计算
                 if (numberString.length() > 0) {
                     mFormulaList.add(new MathNumber(numberString));
                     numberString.setLength(0);
-                } else {
+                }else if(operatorString.length() > 0){
                     OperatorInto(operatorString);
                     operatorString.setLength(0);
                 }
@@ -146,13 +146,16 @@ public class Calculate {//计算
             lastVHL=mOperators.peek().getVHL();
         }
         if (operator.getName() .equals(")") ) {
-            while (mOperators.peek().getName().equals("(") ) {
+            while (!mOperators.peek().getName().equals("(")) {
                 mFormulaList.add(mOperators.pop());
             }
-        } else if (operator.getVHL() <= lastVHL) {
-            mFormulaList.add(mOperators.pop());
+            mOperators.pop();
+        } else {
+            if (operator.getVHL() <= lastVHL&&!operator.getName().equals("(")) {
+                mFormulaList.add(mOperators.pop());
+            }
+            mOperators.push(operator);
         }
-        mOperators.push(operator);
     }
 
     private String setNumberFormat(String number,int radixPoint){//给数字添加千位分隔符 逗号
