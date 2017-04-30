@@ -13,14 +13,13 @@ public class Operator implements MathSymbol {
     }
 
     public MathNumber doCalculate(MathNumber[] numbers,int maxDecimal){
-        BigDecimal answer=new BigDecimal(0);
-        if (numbers[1]==null){
-            answer=calculate(numbers[0].getValue());
-        }
-        if (numbers[1]!=null){
-            answer=calculate(numbers[1].getValue(),numbers[0].getValue());
-        }else if (numbers[0]==null){
+        BigDecimal answer;
+        if (numbers[0]==null&&numbers[1]==null){
             answer=calculate();
+        }else if (numbers[1]==null){
+            answer=calculate(numbers[0].getValue());
+        }else {
+            answer=calculate(numbers[1].getValue(),numbers[0].getValue());
         }
         answer=answer.setScale(maxDecimal,BigDecimal.ROUND_DOWN);
         return new MathNumber(solveErrorValue(answer,maxDecimal));
@@ -63,6 +62,11 @@ public class Operator implements MathSymbol {
             case "ln":
                 result=new BigDecimal(Math.log(number.doubleValue()));
                 break;
+            case "π":
+                result=new BigDecimal(Math.PI).multiply(number);
+                break;
+            case "e":
+                result=new BigDecimal(Math.E).multiply(number);
         }
         return result;
     }

@@ -30,8 +30,8 @@ public class Calculate {//计算
     }
     public void scanner(String s){//输入运算符
         cleanErrorMessage();
-        if (s.equals(" ")){
-            mFormula.append(" ");
+        if (s.equals(" ")||s.equals(".")){
+            mFormula.append(s);
         }else {
             mFormula.append(" ");
             mFormula.append(s);
@@ -113,7 +113,6 @@ public class Calculate {//计算
     }
 
     private MathNumber calculateRPN(){//运算逆波兰表达式
-        // TODO: 2017/4/29 debug 
         MathNumber[] numbers=new MathNumber[2];
         MathSymbol symbol;
         for (int i=0;i<mFormulaList.size();i++){
@@ -121,15 +120,12 @@ public class Calculate {//计算
             if (symbol.getIsOperator()){
                 Operator operator=(Operator)symbol;
                 int place=i-1;
-                for (int j=place;j>place-2;j--){
+                for (int j=place;j>place-2&&j>=0;j--){
                     if (!mFormulaList.get(j).getIsOperator()) {
                         MathNumber number = (MathNumber) mFormulaList.get(j);
                         mFormulaList.remove(j);
                         i--;
                         numbers[place-j] = number;
-                    }
-                    if (j==0){
-                        break;
                     }
                 }
                 mFormulaList.set(i,operator.doCalculate(numbers,mMaxDecimal));
