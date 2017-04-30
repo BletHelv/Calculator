@@ -93,6 +93,26 @@ public class Operator implements MathSymbol {
             case "^":
                 result=new BigDecimal(Math.pow(number1.doubleValue(),number2.doubleValue()));
                 break;
+            case "sin":
+                result=new BigDecimal(Math.sin(Math.toRadians(number2.doubleValue())));//转化成角度
+                result=number1.multiply(result);
+                break;
+            case "cos":
+                result=new BigDecimal(Math.cos(Math.toRadians(number2.doubleValue())));
+                result=number1.multiply(result);
+                break;
+            case "tan":
+                result=new BigDecimal(Math.tan(Math.toRadians(number2.doubleValue())));
+                result=number1.multiply(result);
+                break;
+            case "log":
+                result=new BigDecimal(Math.log10(number2.doubleValue()));
+                result=number1.multiply(result);
+                break;
+            case "ln":
+                result=new BigDecimal(Math.log(number2.doubleValue()));
+                result=number1.multiply(result);
+                break;
         }
         return result;
     }
