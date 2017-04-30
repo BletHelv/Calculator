@@ -93,15 +93,18 @@ public class Calculate {//计算
         StringBuffer operatorString = new StringBuffer();
         for (int i = 0; i < mFormula.length(); i++) {
             char formulaChar = mFormula.charAt(i);//字母和符号
-            if (formulaChar >= '0' && formulaChar <= '9' || formulaChar == '.') {
-                numberString.append(formulaChar);
-            } else if (formulaChar!=' ') {
-                operatorString.append(formulaChar);
+            if (formulaChar!=' ') {
+                if (formulaChar>='0'&&formulaChar<='9'||formulaChar == '.'||
+                        formulaChar=='-'&&mFormula.charAt(i+1)!=' '){
+                    numberString.append(formulaChar);
+                }else {
+                    operatorString.append(formulaChar);
+                }
             } else{
                 if (numberString.length() > 0) {
                     mFormulaList.add(new MathNumber(numberString));
                     numberString.setLength(0);
-                }else if(operatorString.length() > 0){
+                } else if (operatorString.length() > 0) {
                     OperatorInto(operatorString);
                     operatorString.setLength(0);
                 }
