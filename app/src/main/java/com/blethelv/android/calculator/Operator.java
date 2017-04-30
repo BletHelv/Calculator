@@ -37,25 +37,25 @@ public class Operator implements MathSymbol {
         return result;
     }
     private BigDecimal calculate(BigDecimal number){//单目运算
-        BigDecimal result=V0;
+        BigDecimal result=BigDecimal.ZERO;
         switch (mSymbol) {
             case "%":
-                result=number.divide(V100);
+                result=number.divide(BigDecimal.valueOf(10));
                 break;
             case "-":
-                result=V0.subtract(number);
+                result=BigDecimal.ZERO.subtract(number);
                 break;
             case "+":
-                result=V0.add(number);
+                result=BigDecimal.ZERO.add(number);
                 break;
             case "sin":
-                result=new BigDecimal(Math.sin(number.divide(V180).doubleValue()*Math.PI));
+                result=new BigDecimal(Math.sin(Math.toRadians(number.doubleValue())));//转化成角度
                 break;
             case "cos":
-                result=new BigDecimal(Math.cos(number.divide(V180).doubleValue()*Math.PI));
+                result=new BigDecimal(Math.cos(Math.toRadians(number.doubleValue())));
                 break;
             case "tan":
-                result=new BigDecimal(Math.tan(number.divide(V180).doubleValue()*Math.PI));
+                result=new BigDecimal(Math.tan(Math.toRadians(number.doubleValue())));
                 break;
             case "log":
                 result=new BigDecimal(Math.log10(number.doubleValue()));
@@ -68,7 +68,7 @@ public class Operator implements MathSymbol {
     }
 
     private BigDecimal calculate(BigDecimal number1,BigDecimal number2){//双目运算
-        BigDecimal result=V0;
+        BigDecimal result=BigDecimal.ZERO;
         switch (mSymbol){
             case "+":
                 result=number1.add(number2);
@@ -107,7 +107,6 @@ public class Operator implements MathSymbol {
         return mIsOperator;
     }
 
-
     private BigDecimal solveErrorValue(BigDecimal value,int maxDecimal){//解决 误差值
         String number=value.subtract(new BigDecimal(value.toBigInteger())).toPlainString();//不以指数形式输出
         BigDecimal result=value;
@@ -122,7 +121,9 @@ public class Operator implements MathSymbol {
         }
         return result;
     }
+
     private BigDecimal makeLeastValue(int value,int maxDecimal){//生成最小的数 （小数点精确位）
-        return new BigDecimal(value).divide(V10.pow(maxDecimal));
+        return new BigDecimal(value).divide(BigDecimal.TEN.pow(maxDecimal));
     }
+
 }
