@@ -30,7 +30,13 @@ public class Calculate {//计算
     }
     public void scanner(String s){//输入运算符
         cleanErrorMessage();
-        if (s.equals(" ")||s.equals(".")){
+        char last='\0';
+        if (mFormula.length()>0){
+            last=mFormula.charAt(mFormula.length()-1);
+        }
+        if (s.equals(" ")||s.equals(".")||
+            s.equals("-")&&!(last>='0'&&last<='9'||
+                                last=='e'||last=='π'||last==')'||last=='\0')){//负号的情况
             mFormula.append(s);
         }else {
             mFormula.append(" ");
@@ -230,7 +236,8 @@ public class Calculate {//计算
     }
     private void errorsData(){//报错数据
         mErrorsCue.put(new ArithmeticException().toString(),mErrors[0]);
-        mErrorsCue.put(new NumberFormatException().toString(),mErrors[1] );
+        mErrorsCue.put(new NumberFormatException().toString(),mErrors[1]);
+        mErrorsCue.put(new InfinityException().toString(),mErrors[2]);
     }
     private void disposeErrors(RuntimeException e){//错误处理
         mFormulaList.clear();

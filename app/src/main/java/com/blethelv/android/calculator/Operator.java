@@ -1,6 +1,7 @@
 package com.blethelv.android.calculator;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class Operator implements MathSymbol {
     private String mSymbol;//运算符
@@ -14,14 +15,16 @@ public class Operator implements MathSymbol {
 
     public MathNumber doCalculate(MathNumber[] numbers,int maxDecimal){
         BigDecimal answer;
-        if (numbers[0]==null&&numbers[1]==null){
+        if (numbers[0]==null&&numbers[1]==null){//无值运算
             answer=calculate();
-        }else if (numbers[1]==null){
+        }else if (numbers[1]==null){//单目运算
             answer=calculate(numbers[0].getValue());
-        }else {
+        }else {//双目运算
             answer=calculate(numbers[1].getValue(),numbers[0].getValue());
         }
-        answer=answer.setScale(maxDecimal,BigDecimal.ROUND_DOWN);
+        if (!answer.equals(BigDecimal.ZERO)) {
+            answer = answer.setScale(maxDecimal, BigDecimal.ROUND_HALF_UP);
+        }
         return new MathNumber(solveErrorValue(answer,maxDecimal));
     }
     private BigDecimal calculate(){//常数
@@ -47,14 +50,17 @@ public class Operator implements MathSymbol {
             case "+":
                 result=BigDecimal.ZERO.add(number);
                 break;
+            case "√":
+                result=new BigDecimal(Math.sqrt(number.doubleValue()));
+                break;
             case "sin":
-                result=new BigDecimal(Math.sin(Math.toRadians(number.doubleValue())));//转化成角度
+                result=triangle(mSymbol,number);
                 break;
             case "cos":
-                result=new BigDecimal(Math.cos(Math.toRadians(number.doubleValue())));
+                result=triangle(mSymbol,number);
                 break;
             case "tan":
-                result=new BigDecimal(Math.tan(Math.toRadians(number.doubleValue())));
+                result=triangle(mSymbol,number);
                 break;
             case "log":
                 result=new BigDecimal(Math.log10(number.doubleValue()));
@@ -87,22 +93,23 @@ public class Operator implements MathSymbol {
                 result=number1.divide(number2,maxDecimal ,BigDecimal.ROUND_HALF_UP);
                 break;
             case "√":
+                result= BigDecimal.ONE.divide(number1,maxDecimal ,BigDecimal.ROUND_HALF_UP);
                 result=new BigDecimal(Math.pow(number2.doubleValue(),
-                        new BigDecimal(1).divide(number1).doubleValue()));
+                        result.doubleValue()));
                 break;
             case "^":
                 result=new BigDecimal(Math.pow(number1.doubleValue(),number2.doubleValue()));
                 break;
             case "sin":
-                result=new BigDecimal(Math.sin(Math.toRadians(number2.doubleValue())));//转化成角度
+                result=triangle(mSymbol,number2);
                 result=number1.multiply(result);
                 break;
             case "cos":
-                result=new BigDecimal(Math.cos(Math.toRadians(number2.doubleValue())));
+                result=triangle(mSymbol,number2);
                 result=number1.multiply(result);
                 break;
             case "tan":
-                result=new BigDecimal(Math.tan(Math.toRadians(number2.doubleValue())));
+                result=triangle(mSymbol,number2);
                 result=number1.multiply(result);
                 break;
             case "log":
@@ -129,6 +136,86 @@ public class Operator implements MathSymbol {
     @Override
     public boolean getIsOperator(){
         return mIsOperator;
+    }
+
+
+    private BigDecimal triangle(String triangle,BigDecimal number){//三角函数
+        BigDecimal result=BigDecimal.ONE;// TODO: 2017/5/1
+        switch (triangle) {
+            case "sin":
+                BigInteger multiple90Sin = getMultiple90(number);
+                if (multiple90Sin == null) {
+                    result = new BigDecimal(Math.sin(Math.toRadians(number.doubleValue())));//转化成角度
+                } else {
+                    result = TriangleSpecial("sin", multiple90Sin);
+                }
+                break;
+            case "cos":
+                BigInteger multiple90Cos = getMultiple90(number);
+                if (multiple90Cos == null) {
+                    result = new BigDecimal(Math.sin(Math.toRadians(number.doubleValue())));
+                } else {
+                    result = TriangleSpecial("cos", multiple90Cos);
+                }
+                break;
+            case "tan":
+                BigInteger multiple90Tan = getMultiple90(number);
+                if (multiple90Tan == null) {
+                    result = new BigDecimal(Math.sin(Math.toRadians(number.doubleValue())));
+                } else {
+                    result = TriangleSpecial("tan", multiple90Tan);
+                }
+                break;
+        }
+        return result;
+    }
+
+    private BigInteger getMultiple90(BigDecimal value){//是特殊三角函数
+        BigInteger angle=value.toBigInteger();
+        BigInteger squareness=new BigInteger("90");
+        BigInteger multiple90=null;//90的倍数
+        if (new BigDecimal(angle).equals(value)){
+            if (angle.mod(squareness).equals(BigInteger.ZERO)){
+                multiple90=angle.divide(squareness);
+            }
+        }
+        return multiple90;
+    }
+
+    private BigDecimal TriangleSpecial(String triangle,BigInteger multiple90){
+        BigDecimal result=BigDecimal.ZERO;
+        BigInteger two=new BigInteger("2");
+        switch (triangle){
+            case "sin":
+                if (multiple90.mod(two).equals(BigInteger.ONE)){
+                    if (multiple90.divide(two).add(BigInteger.ONE).mod(two).equals(BigInteger.ONE)){
+                        result=new BigDecimal(1);
+                    }else {
+                        result=new BigDecimal(-1);
+                    }
+                }else {
+                    result=new BigDecimal(0);
+                }
+                break;
+            case "cos":
+                if (multiple90.mod(two).equals(BigInteger.ZERO)){
+                    if (multiple90.divide(two).mod(two).equals(BigInteger.ZERO)){
+                        result=new BigDecimal(1);
+                    }else {
+                        result=new BigDecimal(-1);
+                    }
+                }else {
+                    result=new BigDecimal(0);
+                }
+                break;
+            case "tan":
+                if (multiple90.mod(two).equals(BigInteger.ZERO)){
+                    result=new BigDecimal(0);
+                }else {
+                    throw new InfinityException();
+                }
+        }
+        return result;
     }
 
     private BigDecimal solveErrorValue(BigDecimal value,int maxDecimal){//解决 误差值
